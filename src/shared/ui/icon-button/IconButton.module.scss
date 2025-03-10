@@ -1,0 +1,33 @@
+@use "styles/variables.scss" as *;
+
+.IconButton {
+  border-radius: 8px;
+  transition: background 0.3s ease;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.classic {
+  background: $button-bg-color;
+  outline: none;
+  box-shadow: none;
+  &:hover {
+    background: rgba($button-bg-color, 0.8);
+  }
+}
+
+.soft {
+  background: transparent;
+  border: 1px solid $primary-border-color;
+  color: $primary-border-color;
+  &:hover {
+    background: $button-bg-color;
+    color: white;
+  }
+}
+
+.outline {
+  border: 1px solid var(--primary-border-color);
+  background: transparent;
+}

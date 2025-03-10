@@ -1,0 +1,17 @@
+@use "./variables.scss" as *;
+@use "./reset.scss" as *;
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400..600;1,400..600&display=swap");
+@import "@radix-ui/themes/styles.css";
+
+body {
+  font-family: "IBM Plex Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 16px;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+  background-color: $background-color;
+  color: $text-color;
+  padding: 16px !important;
+  overflow: hidden;
+}

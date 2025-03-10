@@ -1,0 +1,93 @@
+@use "styles/variables.scss" as *;
+
+.authBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.authModal {
+  background: $primary-auth-color;
+  padding: 24px;
+  width: 360px;
+  border-radius: 16px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.authHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  h2 {
+    font-size: 22px;
+    color: white;
+  }
+
+  .closeBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 18px;
+  }
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  label {
+    font-size: 14px;
+    color: #ccc;
+  }
+
+  input {
+    padding: 16px;
+    border: 1px solid $primary-border-color;
+    border-radius: 8px;
+    background: $primary-block-color;
+    color: white;
+    font-size: 16px;
+
+    &::placeholder {
+      color: #888;
+    }
+  }
+
+  .loginBtn {
+    margin-top: 15px;
+    padding: 12px;
+    background: $button-bg-color;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background: darken($button-bg-color, 10%);
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

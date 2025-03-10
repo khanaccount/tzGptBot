@@ -1,0 +1,40 @@
+@use "styles/variables.scss" as *;
+
+.Root {
+  all: unset;
+  width: 42px;
+  height: 25px;
+  background-color: white;
+  border-radius: $border-radius;
+  position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  &:focus {
+    box-shadow: 0 0 0 2px black;
+  }
+  &[data-state="checked"] {
+    background-color: white;
+  }
+}
+
+.Thumb {
+  display: block;
+  width: 21px;
+  height: 21px;
+  background-color: $button-bg-color;
+  border-radius: 9999px;
+
+  transition: transform 100ms;
+  transform: translateX(19px);
+  will-change: transform;
+  &[data-state="checked"] {
+    transform: translateX(2px);
+  }
+}
+
+.Label {
+  color: white;
+  font-size: 15px;
+  line-height: 1;
+  user-select: none;
+}

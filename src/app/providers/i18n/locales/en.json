@@ -1,0 +1,17 @@
+{
+  "auth": {
+    "title": "Authorization",
+    "email": "Email",
+    "password": "Password",
+    "yourPassword": "Your password",
+    "signIn": "Sign In"
+  },
+  "chat": {
+    "placeholder": "Ask about something..."
+  },
+  "sidebar": {
+    "search": "Search...",
+    "authBtn": "Sign In",
+    "notFoundChat": "Chat not found"
+  }
+}

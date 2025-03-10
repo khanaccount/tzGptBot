@@ -1,0 +1,17 @@
+{
+  "auth": {
+    "title": "Авторизация",
+    "email": "Почта",
+    "password": "Пароль",
+    "yourPassword": "Ваш пароль",
+    "signIn": "Войти"
+  },
+  "chat": {
+    "placeholder": "Спроси о чем-нибудь..."
+  },
+  "sidebar": {
+    "search": "Поиск...",
+    "authBtn": "Войти",
+    "notFoundChat": "Чат не найден"
+  }
+}

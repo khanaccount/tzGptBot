@@ -1,0 +1,180 @@
+@use "styles/variables.scss" as *;
+
+.chat {
+  width: 100%;
+  background-color: $primary-block-color;
+  padding: $padding;
+  border-radius: $border-radius;
+  position: relative;
+  .sidebar_toggle {
+    position: absolute;
+    left: 22px;
+    top: 79px;
+    span {
+      transform: translateX(2px);
+    }
+  }
+  .chat_container {
+    max-width: 1250px;
+    margin: 0 auto;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .chat_block {
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column-reverse;
+      padding: 0 10px;
+
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 10px;
+        transition: background 0.3s;
+      }
+      .user_message {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        &:not(:last-child) {
+          margin-bottom: 16px;
+        }
+        .copy_icon {
+          width: 17px;
+          height: 17px;
+          margin-right: 10px;
+          cursor: pointer;
+        }
+
+        .message_block {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 5px 14px;
+          background-color: rgba(71, 133, 255, 0.5);
+          border-top-left-radius: 10px;
+          border-bottom-left-radius: 10px;
+          border-top-right-radius: 10px;
+          .user_text {
+            font-size: 18px;
+            word-break: break-word;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+          }
+          .user_text__time {
+            margin-top: auto;
+            align-self: flex-end;
+            white-space: nowrap;
+            font-size: 12px;
+            margin-top: 26px;
+          }
+        }
+      }
+      .gpt_message {
+        display: flex;
+        gap: 16px;
+        .top {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          .name_gpt_model {
+            font-size: 14px;
+            padding: 4px 12px;
+            font-weight: 500;
+            background-color: #222b44;
+            border-radius: 14px;
+          }
+        }
+        .middle {
+          margin-top: 10px;
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          .gpt_answer {
+            word-break: break-word;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+          }
+        }
+
+        .bottom {
+          margin-top: 10px;
+          display: flex;
+          gap: 100px;
+          .token_info {
+            display: flex;
+            gap: 15px;
+
+            .token_cost {
+              color: #9ca3af;
+            }
+            .svgIcon {
+              cursor: pointer;
+              color: #616d8d;
+            }
+          }
+          .answer_gpt_time {
+            font-size: 12px;
+            margin-top: auto;
+            align-self: flex-end;
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+    .modelIcon {
+      width: 20px;
+      height: 20px;
+    }
+    .TriggerContent {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .inputBlock {
+      .input_container {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+        padding: 14px 20px;
+        border: 1px solid $primary-border-color;
+        border-radius: 10px;
+        .input_field {
+          background-color: transparent;
+          outline: none;
+          border: none;
+          width: 100%;
+          color: white;
+          font-size: 17px;
+          padding-right: 16px;
+          &::placeholder {
+            color: #616d8d;
+            font-weight: 500;
+            font-size: 14px;
+          }
+        }
+        .send_btn {
+          cursor: pointer;
+          padding: 10px;
+          border-radius: 8px;
+          background-color: $button-bg-color;
+        }
+      }
+    }
+  }
+  .svgGpt {
+    width: 40px;
+    height: 40px;
+  }
+}

@@ -1,0 +1,63 @@
+@use "styles/variables.scss" as *;
+
+.Trigger {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #121825;
+  border-radius: 8px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  min-width: 120px;
+  padding: 8px 12px;
+  position: relative;
+  border: 1px solid rgba($primary-border-color, 1);
+}
+
+.ItemContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.Icon {
+  width: 18px;
+  height: 18px;
+  color: white;
+}
+
+.Content {
+  background-color: #121825;
+  border: 1px solid $primary-border-color;
+  border-radius: 8px;
+  padding: 8px;
+  min-width: 120px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.Item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: rgba($primary-border-color, 0.3);
+  }
+}
+
+.Selected {
+  background-color: $primary-border-color;
+}
