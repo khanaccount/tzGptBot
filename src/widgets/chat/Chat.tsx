@@ -9,6 +9,7 @@ import { Message, Models } from "interface";
 import { fetchChatMessages, fetchModels, sendMessage } from "entities/chat/api";
 import { toast, Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { ClipLoader } from "react-spinners";
 
 import s from "./Chat.module.scss";
 
@@ -19,6 +20,8 @@ export const Chat: React.FC = () => {
   const [inputValue, setInputValue] = useState("");
   const [models, setModels] = useState<Models[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
+  const [loading, setLoading] = useState(false);
+
   const { t } = useTranslation();
 
   const isOpen = useUnit($isSidebarOpen);
@@ -26,17 +29,32 @@ export const Chat: React.FC = () => {
 
   useEffect(() => {
     fetchModels().then((data) => setModels(data));
-    fetchChatMessages(chatId).then((data) => setMessages(data));
+
+    const intervalId = setInterval(async () => {
+      try {
+        const updatedMessages = await fetchChatMessages(chatId);
+        setMessages(updatedMessages);
+      } catch (error) {
+        console.error("Ошибка при загрузке сообщений:", error);
+      }
+    }, 3000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [chatId]);
 
   const handleSendRequest = async () => {
+    setLoading(true);
+
     try {
       const result = await sendMessage(chatId, inputValue);
-
       console.log("Сообщение отправлено:", result);
       setInputValue("");
     } catch (error) {
       console.error("Ошибка при отправке сообщения:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -118,6 +136,11 @@ export const Chat: React.FC = () => {
             </div>
           ))}
         </div>
+        {loading && (
+          <div className={s.loading}>
+            <ClipLoader color="#3498db" loading={loading} size={50} />
+          </div>
+        )}
         <div className={s.inputBlock}>
           <DropdownMenuGptModel
             items={models}
