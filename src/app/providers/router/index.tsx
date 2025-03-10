@@ -6,7 +6,7 @@ interface RouterProviderProps {
 }
 
 const RouterProvider: React.FC<RouterProviderProps> = ({ children }) => {
-  return <BrowserRouter basename="/">{children}</BrowserRouter>;
+  return <BrowserRouter basename="/tzGptBot">{children}</BrowserRouter>;
 };
 
 export default RouterProvider;
