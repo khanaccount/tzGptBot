@@ -1,15 +1,16 @@
-# React + TypeScript + Vite
+# TzGptBot
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+## Ссылка на приложение
+Приложение доступно по следующей ссылке: [https://ваш-сайт.com]([https://ваш-сайт.com](https://khanaccount.github.io/tzGptBot/)) 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Установка
 
-## Expanding the ESLint configuration
+Для установки зависимостей используйте одну из следующих команд в зависимости от того, какой менеджер пакетов вы используете:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Если вы используете **npm**:
+  ```bash
+  npm install
 
 ```js
 export default tseslint.config({
