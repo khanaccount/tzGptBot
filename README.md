@@ -2,15 +2,14 @@
 
 
 ## Ссылка на приложение
-Приложение доступно по следующей ссылке: [https://ваш-сайт.com]([https://ваш-сайт.com](https://khanaccount.github.io/tzGptBot/)) 
+Приложение доступно по следующей ссылке: https://khanaccount.github.io/tzGptBot/ 
 
 ## Установка
 
 Для установки зависимостей используйте одну из следующих команд в зависимости от того, какой менеджер пакетов вы используете:
 
-- Если вы используете **npm**:
-  ```bash
-  npm install
+npm install, npm build или yarn, yarn build;
+
 
 ```js
 export default tseslint.config({
