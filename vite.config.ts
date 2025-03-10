@@ -5,6 +5,9 @@ import react from "@vitejs/plugin-react-swc";
 export default defineConfig({
   base: "/tzGptBot/",
   plugins: [react()],
+  build: {
+    outDir: "dist",
+  },
   resolve: {
     alias: {
       app: "/src/app",
