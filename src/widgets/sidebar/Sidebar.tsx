@@ -1,11 +1,7 @@
-// Sidebar.tsx
-import { useState, useEffect, useRef } from "react";
-import { useClickAway } from "react-use";
-import { useNavigate } from "react-router";
 import { IconButton } from "shared/ui/icon-button/IconButton";
 import { SwitchComponent } from "shared/ui/switch/Switch";
 import { AnimatePresence, motion } from "framer-motion";
-import { $isSidebarOpen, closeSidebar, setChatId } from "entities/sidebar/model";
+import { $isSidebarOpen, closeSidebar } from "entities/sidebar/model";
 import { useUnit } from "effector-react";
 import {
   ChatBubbleIcon,
@@ -14,93 +10,31 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
+import { useNavigate } from "react-router";
 import LanguageDropdown from "shared/ui/dropdown-menu-language/Dropdown";
 import s from "./Sidebar.module.scss";
 import logo from "assets/svgs/logo.svg";
 import profiePic from "assets/svgs/profile-pic.svg";
-import { createChat, getChats, deleteChat } from "entities/chat/api";
-import { useTranslation } from "react-i18next";
 
-type Chat = {
-  id: string;
-  name: string;
-  group_id: null | string;
-  model_id: string;
-};
+import { useTranslation } from "react-i18next";
+import { useAuth } from "entities/sidebar/useAuth";
+import { useSearch } from "entities/sidebar/useSearch";
+import { useChats } from "entities/sidebar/useChats";
 
 export const Sidebar: React.FC = () => {
   const isOpen = useUnit($isSidebarOpen);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchText, setSearchText] = useState("");
-  const [activeChatId, setActiveChatId] = useState<string | null>(null);
-  const [chats, setChats] = useState<Chat[]>([]);
-  const [email, setEmail] = useState<string | null>(localStorage.getItem("email"));
+
+  const { chats, activeChatId, handleChatClick, handleDeleteChat, handleCreateChat } = useChats();
+  const { isSearchOpen, searchText, setSearchText, setIsSearchOpen, searchRef } = useSearch();
+  const { handleExit } = useAuth();
+
   const { t } = useTranslation();
 
-  const searchRef = useRef(null);
-  useClickAway(searchRef, () => setIsSearchOpen(false));
-
   const navigate = useNavigate();
-
-  const loadChats = async () => {
-    try {
-      const chatList = await getChats();
-      if (Array.isArray(chatList)) {
-        setChats(chatList);
-      } else {
-        console.error("Полученные данные не массив", chatList);
-      }
-    } catch (error) {
-      console.error("Ошибка при загрузке чатов:", error);
-    }
-  };
-
-  const handleChatClick = (chatId: string) => {
-    setActiveChatId(chatId);
-    setChatId(chatId);
-  };
-
-  useEffect(() => {
-    loadChats();
-  }, []);
-
-  const handleDeleteChat = async (chatId: string) => {
-    try {
-      await deleteChat(chatId);
-      setChats((prevChats) => prevChats.filter((chat) => chat.id !== chatId));
-      if (activeChatId === chatId) {
-        setActiveChatId(null);
-      }
-    } catch (error) {
-      console.error("Ошибка при удалении чата:", error);
-    }
-  };
-
-  const handleCreateChat = async () => {
-    const newChatName = prompt("Введите название чата:");
-    if (newChatName) {
-      try {
-        const newChat = await createChat(newChatName);
-        setChats((prevChats) => [
-          ...prevChats,
-          { id: newChat.id, name: newChat.name, group_id: null, model_id: "gpt" },
-        ]);
-      } catch (error) {
-        console.error("Ошибка при создании чата:", error);
-      }
-    }
-  };
 
   const filteredChats = chats.filter((chat) =>
     chat.name.toLowerCase().includes(searchText.toLowerCase())
   );
-
-  const handleExit = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
-    setEmail(null);
-    navigate("/auth");
-  };
 
   return (
     <AnimatePresence>
@@ -178,12 +112,12 @@ export const Sidebar: React.FC = () => {
             </div>
           </div>
           <div className={s.sidebar_bottom}>
-            {email ? (
+            {localStorage.getItem("email") ? (
               <>
                 <div className={s.user_info_block}>
                   <img src={profiePic} alt="profiePic" />
                   <div className={s.user_info}>
-                    <p className={s.name}>{email}</p>
+                    <p className={s.name}>{localStorage.getItem("email")}</p>
                     <p className={s.token}>9 012 TKN</p>
                   </div>
                 </div>

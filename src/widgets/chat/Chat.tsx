@@ -5,78 +5,38 @@ import { $chatId, $isSidebarOpen, toggleSidebar } from "entities/sidebar/model";
 import { IconButton } from "@radix-ui/themes/components/icon-button";
 import { SwitchComponent } from "shared/ui/switch/Switch";
 import { useUnit } from "effector-react";
-import { Message, Models } from "interface";
-import { fetchChatMessages, fetchModels, sendMessage } from "entities/chat/api";
-import { toast, Toaster } from "react-hot-toast";
+import { Message } from "interface";
+import { fetchChatMessages, fetchModels } from "entities/chat/api";
 import { useTranslation } from "react-i18next";
-import { ClipLoader } from "react-spinners";
 
 import s from "./Chat.module.scss";
 
 import svgGpt from "assets/svgs/gpt3.5.svg";
+import { useClipboard } from "entities/chat/useClipboard";
+import { useSendMessage } from "entities/chat/useSendRequest";
+import { useModel } from "entities/chat/useModal";
+import { useChatData } from "entities/chat/useChatData";
 
 export const Chat: React.FC = () => {
-  const [model, setModel] = useState("ChatGPT");
+  const chatId = useUnit($chatId);
+  const isOpen = useUnit($isSidebarOpen);
+
   const [inputValue, setInputValue] = useState("");
-  const [models, setModels] = useState<Models[]>([]);
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [loading, setLoading] = useState(false);
 
   const { t } = useTranslation();
 
-  const isOpen = useUnit($isSidebarOpen);
-  const chatId = useUnit($chatId);
+  const { messages, models, setMessages, setModels } = useChatData(chatId);
+  const { handleCopyToClipboard } = useClipboard();
+  const { isSending, handleSendRequest } = useSendMessage(chatId);
+  const { model, handleChangeModel } = useModel();
 
   useEffect(() => {
     fetchModels().then((data) => setModels(data));
-
-    const intervalId = setInterval(async () => {
-      try {
-        const updatedMessages = await fetchChatMessages(chatId);
-        setMessages(updatedMessages);
-      } catch (error) {
-        console.error("Ошибка при загрузке сообщений:", error);
-      }
-    }, 3000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [chatId]);
-
-  const handleSendRequest = async () => {
-    setLoading(true);
-
-    try {
-      const result = await sendMessage(chatId, inputValue);
-      console.log("Сообщение отправлено:", result);
-      setInputValue("");
-    } catch (error) {
-      console.error("Ошибка при отправке сообщения:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCopyToClipboard = (content: string) => {
-    if (navigator.clipboard) {
-      navigator.clipboard
-        .writeText(content)
-        .then(() => {
-          toast.success("Текст скопирован в буфер обмена!");
-        })
-        .catch((error) => {
-          toast.error("Ошибка при копировании текста");
-          console.error("Ошибка при копировании текста: ", error);
-        });
-    } else {
-      toast.error("Clipboard API не поддерживается в этом браузере.");
-    }
-  };
+    fetchChatMessages(chatId).then((data) => setMessages(data));
+  }, [chatId, setModels, setMessages]);
 
   return (
     <div className={s.chat}>
-      <Toaster position="top-center" reverseOrder={false} />
       <div className={s.chat_container}>
         {!isOpen && (
           <div className={s.sidebar_toggle} onClick={() => toggleSidebar()}>
@@ -84,7 +44,7 @@ export const Chat: React.FC = () => {
           </div>
         )}
         <div className={s.chat_block}>
-          {messages.map((message) => (
+          {messages.map((message: Message) => (
             <div
               key={message.id}
               className={message.role === "user" ? s.user_message : s.gpt_message}
@@ -100,7 +60,6 @@ export const Chat: React.FC = () => {
                   <div className={s.message_block}>
                     <p className={s.user_text}>{message.content}</p>
                     <p className={s.user_text__time}>
-                      {" "}
                       {new Date(message.created_at).toLocaleString()}
                     </p>
                   </div>
@@ -113,7 +72,7 @@ export const Chat: React.FC = () => {
                       <p className={s.name_gpt}>
                         {message.model?.parent?.label || "Unknown model"}
                       </p>
-                      <p className={s.name_gpt_model}> {message.model?.label || "Unknown model"}</p>
+                      <p className={s.name_gpt_model}>{message.model?.label || "Unknown model"}</p>
                     </div>
                     <div className={s.middle}>
                       <p className={s.gpt_answer}>{message.content}</p>
@@ -136,16 +95,11 @@ export const Chat: React.FC = () => {
             </div>
           ))}
         </div>
-        {loading && (
-          <div className={s.loading}>
-            <ClipLoader color="#3498db" loading={loading} size={50} />
-          </div>
-        )}
         <div className={s.inputBlock}>
           <DropdownMenuGptModel
             items={models}
             selectedValue={model}
-            onSelect={setModel}
+            onSelect={handleChangeModel}
             trigger={
               <div className={s.TriggerContent}>
                 <span>{model}</span>
@@ -162,9 +116,10 @@ export const Chat: React.FC = () => {
             />
             <IconButton
               type="submit"
-              onClick={handleSendRequest}
+              onClick={() => handleSendRequest(inputValue)} // Используем хук для отправки сообщения
               className={s.send_btn}
               variant="classic"
+              disabled={isSending} // Блокируем кнопку, если сообщение отправляется
             >
               <PaperPlaneIcon width="20" height="20" />
             </IconButton>
